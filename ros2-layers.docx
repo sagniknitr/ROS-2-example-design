@@ -1,0 +1,67 @@
+﻿->discovery of ros nodes 
+advertises to same ROS Domain name
+ROS_DOMAIN_ID environment variable.
+nodes reply by providing info about themselves
+nodes will estqablish connections regarding to QoS settings
+
+-> Different DDS Vendors
+no centralized like ROS 1
+QoS options for transportation
+End to End middleware
+DDS- much less code to maintain
+drawback – ROS must work with exixtinf design
+
+→ DDS
+interface description language
+distrbuted discovety system( no requirement for master)
+DDS is implemented on UDP
+RTI Comnext used UDP v4 and shared memory transport to comm, with other DDS
+OpenSplice -> TCP
+DDS provide discovery, message definition,message seriliazation,publish-subscribe transport
+DDS RTPS would replace TCPROS and UDPROS
+ROS 1 msg files converted ti .idl files for DDS
+The cost of this conversion is insignificant to cost of serialization
+
+→ ROS Command line tools
+ROS 2 uses a distributed discovery process for nodes to connect to each other. As this process purposefully does not use a centralized discovery mechanism (like the ROS Master in ROS 1), it can take time for ROS nodes to discover all other participants in the ROS graph. Because of this, there is a long-running daemon in the background that stores information about the ROS graph to provide faster responses to queries, e.g. the list of node names.
+
+→ Multiple ROS 2 Middle ware
+For many cases you will find that nodes using different RMW implementations are able to communicate, however this is not true under all circumstances. A list of supported inter-vendor communication configurations is forthcoming.
+
+To have multiple RMW implementations available for use you must have built from source (see above).
+
+Terminal Command → RMW_IMPLEMENTATION=rmw_connext_cpp ros2 run demo_nodes_cpp talker which will run the talker demo with the C++ RMW implementation for Connext.
+→ Composing multiple nodes in a Single Process
+
+Recommended way is to write a nodelet(also nown as component)
+
+The vision that a future version of roslaunch will support making these different deployments easily configurable.
+
+The Component doesnot have an main function.It sublcasses form rclcpp::Node.
+
+Since it is not in control of the thread it shouldn't perform any long running or even blocking tasks in its constructor. Instead it can use timers to get periodic notification. Additionally it can create publishers, subscribers, servers, and clients.
+
+
+  
+ 
+->ROS 1 vs ROS 2
+there was no standard shared-memory transport in ROS 1 as it was negligibly faster than localhost TCP loop back connections
+Nodelets in ROS 1 allowed P-S to share data by pasin boost::shared_ptr to messages
+ROS 1 – 1) serialize the mssge 2) call TCP send on the buffer once
+DDS – 1)seriliaze the message 2) break the message into many UDP packets 3) cal UDO send many times
+
+->What are the layers of ROS 2?
+
+
+
+
+
+
+->ros-bridge communicatiosn ?
+
+
+
+->ros 2 package ?
+
+
+
