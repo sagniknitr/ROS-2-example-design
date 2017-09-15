@@ -5,7 +5,14 @@
 #Call this Script for installing Turtlebot in ROS2
 #version - the version of ros
 
-# check
+# check if presently inside ROS Directory
+
+if [ -z "$ROS_DIR" ]
+then
+echo "ROS2_DIR was not set, please enter the valid path"
+read input_variable
+export ROS_DIR=$input_variable
+fi
 
 echo "Downloading TurtleBot2 demos specific code "
 wget https://raw.githubusercontent.com/ros2/turtlebot2_demo/release-latest/turtlebot2_demo.repos
