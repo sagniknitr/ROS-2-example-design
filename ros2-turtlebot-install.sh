@@ -11,15 +11,15 @@
 
 if [ -z "$ROS_2_DIR" ]
 then
-echo "ROS2_DIR was not set, please enter the valid path"
+echo "ROS2_DIR was not set, please enter the entire valid path"
 read input_variable
 export ROS2_DIR=$input_variable
 fi
 
-echo "Enter your ROS_1 version"
+echo "Enter your ROS_1 version(indigo/kinetic/lunar/any other version currently installed)"
 read ros_1_ver
 
-
+cd $ROS2_DIR
 echo "Downloading TurtleBot2 demos specific code "
 wget https://raw.githubusercontent.com/ros2/turtlebot2_demo/release-latest/turtlebot2_demo.repos
 echo "Importing Turtlebot2 Source Repository"
@@ -61,10 +61,13 @@ src/ament/ament_tools/scripts/ament.py build --isolated --symlink-install --para
 echo "Building ROS 2 with turltebot"
 echo "If you have a low spec machine it is advisable to do any other work"
 
-echo "Sourcing ROS 1 Directory"
+echo "Sourcing ROS 1 Directory "
+echo "/opt/ros/$ros_1_ver/setup.bash"
 source /opt/ros/$ros_1_ver/setup.bash
 
 echo "Starting Ament Build"
+
+
 src/ament/ament_tools/scripts/ament.py build --isolated --symlink-install --parallel --only cartographer cartographer_ros ceres_solver turtlebot2_amcl turtlebot2_cartographer turtlebot2_drivers turtlebot2_follower turtlebot2_teleop --make-flags -j2 -l
 
 echo "Setting up Udev rules"
