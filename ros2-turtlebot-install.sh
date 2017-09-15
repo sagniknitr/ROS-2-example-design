@@ -5,14 +5,20 @@
 #Call this Script for installing Turtlebot in ROS2
 #version - the version of ros
 
+#Before Installing be sure to add ros_1 path and ros_2 path in environment variable
+
 # check if presently inside ROS Directory
 
-if [ -z "$ROS_DIR" ]
+if [ -z "$ROS_2_DIR" ]
 then
 echo "ROS2_DIR was not set, please enter the valid path"
 read input_variable
-export ROS_DIR=$input_variable
+export ROS2_DIR=$input_variable
 fi
+
+echo "Enter your ROS_1 version"
+read ros_1_ver
+
 
 echo "Downloading TurtleBot2 demos specific code "
 wget https://raw.githubusercontent.com/ros2/turtlebot2_demo/release-latest/turtlebot2_demo.repos
@@ -55,13 +61,15 @@ src/ament/ament_tools/scripts/ament.py build --isolated --symlink-install --para
 echo "Building ROS 2 with turltebot"
 echo "If you have a low spec machine it is advisable to do any other work"
 
-source /opt/ros/kinetic/setup.bash
+echo "Sourcing ROS 1 Directory"
+source /opt/ros/$ros_1_ver/setup.bash
 
+echo "Starting Ament Build"
 src/ament/ament_tools/scripts/ament.py build --isolated --symlink-install --parallel --only cartographer cartographer_ros ceres_solver turtlebot2_amcl turtlebot2_cartographer turtlebot2_drivers turtlebot2_follower turtlebot2_teleop --make-flags -j2 -l
 
 echo "Setting up Udev rules"
 
-cd ~/ros2_ws/src/ros_astra_camera
+cd ~/$ROS2_DIR/src/ros_astra_camera
 sudo cp 56-orbbec-usb.rules /etc/udev/rules.d
 sudo cp `rospack find kobuki_ftdi`/57-kobuki.rules /etc/udev/rules.d
 
@@ -72,8 +80,8 @@ sudo service udev restart
 
 echo "Sourcing the Workspacw"
 
-source /opt/ros/kinetic/setup.bash
-source ~/ros2_ws/install/local_setup.bash
+source /opt/ros/$ros_1_ver/setup.bash
+source ~/$ROS2_DIR/install/local_setup.bash
 
 echo "Installation finished----now run the demos"
 
