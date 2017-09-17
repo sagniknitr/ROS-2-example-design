@@ -72,7 +72,7 @@ src/ament/ament_tools/scripts/ament.py build --isolated --symlink-install --para
 
 echo "Setting up Udev rules"
 
-cd ~/$ROS2_DIR/src/ros_astra_camera
+cd $ROS2_DIR/src/ros_astra_camera
 sudo cp 56-orbbec-usb.rules /etc/udev/rules.d
 sudo cp `rospack find kobuki_ftdi`/57-kobuki.rules /etc/udev/rules.d
 
@@ -84,7 +84,7 @@ sudo service udev restart
 echo "Sourcing the Workspacw"
 
 source /opt/ros/$ros_1_ver/setup.bash
-source ~/$ROS2_DIR/install/local_setup.bash
+source $ROS2_DIR/install/local_setup.bash
 
 echo "Installation finished----now run the demos"
 
